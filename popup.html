@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>LeetCode to GitHub</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+  <!-- Auth Screen (shown when no token) -->
+  <div id="authScreen">
+    <h2>Connect to GitHub</h2>
+    <p>Automatically save your LeetCode solutions to GitHub.</p>
+
+    <div class="info-box">
+      <h3>🔒 Secure OAuth Authentication</h3>
+      <p>Click below to securely connect your GitHub account. You'll be redirected to GitHub to authorize this
+        extension.</p>
+    </div>
+
+    <button id="connectBtn" class="primary-btn">Connect to GitHub</button>
+
+    <div id="authError" class="error"></div>
+
+    <div class="setup-info">
+      <details>
+        <summary>First time setup required</summary>
+        <p>Extension ID: <code id="extensionId">Loading...</code></p>
+        <p>You need to update your GitHub OAuth app's redirect URI to:</p>
+        <code id="redirectUri">Loading...</code>
+        <a href="https://github.com/settings/developers" target="_blank">Update OAuth App</a>
+      </details>
+    </div>
+  </div>
+
+  <!-- Main Screen (shown when token exists) -->
+  <div id="mainScreen" style="display: none;">
+    <div class="header">
+      <h2>✓ Connected to GitHub</h2>
+      <p id="userInfo">Loading...</p>
+    </div>
+
+    <!-- Repository Management Section -->
+    <div class="repo-section">
+      <h3>Repository Settings</h3>
+
+      <!-- Current Repo Display -->
+      <div class="current-repo">
+        <label>Active Repository:</label>
+        <div id="currentRepo" class="repo-display">No repository selected</div>
+      </div>
+
+      <!-- Select Existing Repo -->
+      <div class="form-group">
+        <label for="repoSelect">Select Existing Repo:</label>
+        <select id="repoSelect" class="repo-select">
+          <option value="">Loading repositories...</option>
+        </select>
+        <button id="selectRepoBtn" class="secondary-btn" disabled>Use This Repo</button>
+      </div>
+
+      <!-- OR divider -->
+      <div class="divider">
+        <span>OR</span>
+      </div>
+
+      <!-- Create New Repo -->
+      <div class="form-group">
+        <label for="newRepoName">Create New Repository:</label>
+        <input type="text" id="newRepoName" placeholder="(l|n)eetcode-solutions" class="text-input">
+
+        <label for="newRepoDescription">Description (optional):</label>
+        <input type="text" id="newRepoDescription" placeholder="My LeetCode solutions" class="text-input">
+
+        <label class="checkbox-label">
+          <input type="checkbox" id="isPrivate">
+          Make repository private
+        </label>
+
+        <button id="createRepoBtn" class="primary-btn">Create Repository</button>
+      </div>
+    </div>
+
+    <div class="submission-section">
+  <h3>Latest Submission</h3>
+  <div id="latestSubmission" class="submission-display">
+    <p class="no-submission">No submissions detected yet. Solve a problem on LeetCode!</p>
+  </div>
+  </div>
+
+    <!-- Status Messages -->
+    <div id="statusMessage" class="status-message"></div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <button id="disconnectBtn" class="secondary-btn">Disconnect</button>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+
+</html>

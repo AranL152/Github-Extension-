@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "LeetCode to GitHub",
+  "version": "1.0.0",
+  "permissions": [
+    "storage",
+    "identity",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://api.github.com/*",
+    "https://github.com/*",
+    "https://leetcode.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "Dieppe.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://leetcode.com/*",
+        "*://*.leetcode.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "all_frames": false
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["inject.js"],
+      "matches": ["*://leetcode.com/*", "*://*.leetcode.com/*"]
+    }
+  ]
+}
