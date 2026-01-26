@@ -58,7 +58,7 @@ async function handleOAuthFlow(): Promise<string> {
   authUrl.searchParams.append('redirect_uri', redirectUri);
   authUrl.searchParams.append('scope', CONFIG.SCOPES);
   authUrl.searchParams.append('state', generateRandomState());
-
+  
   try {
     const responseUrl = await chrome.identity.launchWebAuthFlow({
       url: authUrl.toString(),
@@ -75,7 +75,7 @@ async function handleOAuthFlow(): Promise<string> {
     if (!code) {
       throw new Error('No authorization code received');
     }
-
+    //token exchange
     const token = await exchangeCodeForToken(code, redirectUri);
     await chrome.storage.local.set({ githubToken: token });
 
