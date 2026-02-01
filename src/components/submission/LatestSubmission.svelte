@@ -16,6 +16,19 @@
   let commitMessage = $state('');
   let showPushForm = $state(false);
 
+  const defaultCommitMessage = $derived.by(() => {
+  const s = $latestSubmission;
+  if (!s) return '';
+  return `${s.runtime} (beats ${s.runtimePercentile}%) | ` +
+         `${s.memory} (beats ${s.memoryPercentile}%)`;
+  });
+
+  $effect(() => {
+  if (showPushForm && !commitMessage && defaultCommitMessage) {
+    commitMessage = defaultCommitMessage;
+  }
+});
+
   async function handlePush() {
     if (!$selectedRepo) {
       onStatusChange('Please select a repository first', 'error');
@@ -106,7 +119,12 @@
       {#if !showPushForm}
         <button
           class="btn btn-primary push-btn"
-          onclick={() => showPushForm = true}
+          onclick={() => {
+            showPushForm = true;
+            if (!commitMessage && defaultCommitMessage) {
+              commitMessage = defaultCommitMessage;
+            }
+            }}
           disabled={!$selectedRepo}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -123,7 +141,6 @@
           <input
             type="text"
             class="input"
-            placeholder="{$latestSubmission.runtime} (beats {$latestSubmission.runtimePercentile}%) | {$latestSubmission.memory}, (beats {$latestSubmission.memoryPercentile} %)"
             bind:value={commitMessage}
           />
           <div class="push-actions">
