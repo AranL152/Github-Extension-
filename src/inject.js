@@ -74,11 +74,9 @@
       console.log('======================================');
     }
     
-    // Check for results
-    if (url.includes('check/')) {
-      console.log('🔍 Check detected');
-      
-      
+    // Check for results - only process if this check belongs to our pending submission
+    if (url.includes('check/') && pendingSubmission && url.includes(String(pendingSubmission.submissionId))) {
+      console.log('🔍 Check detected for submission:', pendingSubmission.submissionId);
 
 
       
@@ -121,8 +119,9 @@
           }));
           
           pendingSubmission = null;
-        } else if (result.state === 'SUCCESS' && result.status_msg === 'Wrong Answer') {
-          pendingSubmission = null; 
+        } else if (result.state === 'SUCCESS') {
+          // Clear pendingSubmission for any terminal state (Wrong Answer, Runtime Error, TLE, MLE, etc.)
+          pendingSubmission = null;
         }
       } catch (e) {
         console.error('Error:', e);
